@@ -1,0 +1,50 @@
+<!-- Presentación/views/index.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title>Sistema de Reservas de Hotel</title>
+</head>
+<body>
+  <h1>Sistema de Reservas de Hotel</h1>
+  
+  <h2>Realizar Reserva</h2>
+  <form action="/reservarHabitacion" method="post">
+    <label for="personas">Número de Personas:</label>
+    <input type="number" name="personas" required>
+    <br>
+    <label for="dias">Número de Días:</label>
+    <input type="number" name="dias" required>
+    <br>
+    <label for="camas">Número de Camas:</label>
+    <input type="number" name="camas" required>
+    <br>
+    <label for="numeroHabitacion">Número de Habitación:</label>
+    <input type="number" name="numeroHabitacion" required>
+    <br>
+    <button type="submit">Reservar</button>
+  </form>
+
+  <h2>Listado de Reservas</h2>
+  <button onclick="listarReservas()">Listar Reservas</button>
+  <ul id="reservas-list"></ul>
+
+  <script>
+    async function listarReservas() {
+      const response = await fetch('/listarReservas');
+      const data = await response.json();
+
+      const reservasList = document.getElementById('reservas-list');
+      reservasList.innerHTML = '';
+
+      data.reservas.forEach(reserva => {
+        const li = document.createElement('li');
+        li.textContent = `Reserva: ${reserva.numero}, Costo Total: $${reserva.costoTotal}`;
+        reservasList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
